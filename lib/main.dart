@@ -7,7 +7,6 @@ import 'service/ride_prefs_service.dart';
 import 'theme/theme.dart';
 
 void main() {
-
   // 1 - Initialize the services
   RidePrefService.initialize(MockRidePreferencesRepository());
   LocationsService.initialize(MockLocationsRepository());
@@ -27,4 +26,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              

@@ -1,12 +1,13 @@
+import 'package:blablacar_week4/model/ride/ride_filter.dart';
+import 'package:blablacar_week4/service/ride_prefs_service.dart';
 import 'package:flutter/material.dart';
 import 'package:blablacar_week4/screens/rides/widgets/ride_pref_bar.dart';
- 
-import '../../dummy_data/dummy_data.dart';
+
 import '../../model/ride/ride.dart';
 import '../../model/ride_pref/ride_pref.dart';
 import '../../service/rides_service.dart';
 import '../../theme/theme.dart';
- 
+
 import 'widgets/rides_tile.dart';
 
 ///
@@ -21,52 +22,58 @@ class RidesScreen extends StatefulWidget {
 }
 
 class _RidesScreenState extends State<RidesScreen> {
- 
-  RidePreference currentPreference  = fakeRidePrefs[0];   // TODO 1 :  We should get it from the service
+  // RidePreference currentPreference  = fakeRidePrefs[0];   // TODO 1 :  We should get it from the service
+  RidePreference get currentRidePreference =>
+      RidePrefService.instance.currentPreference!;
+  RideFilter currentFilter = RideFilter();
 
-  List<Ride> get matchingRides => RidesService.getRidesFor(currentPreference);
+  List<Ride> get matchingRides =>
+      RidesService.instance.getRidesFor(currentRidePreference, currentFilter);
 
   void onBackPressed() {
-    Navigator.of(context).pop();     //  Back to the previous view
-  } 
+    Navigator.of(context).pop(); //  Back to the previous view
+  }
 
   void onPreferencePressed() async {
-        // TODO  6 : we should push the modal with the current pref
+    // TODO  6 : we should push the modal with the current pref
 
-        // TODO 9 :  After pop, we should get the new current pref from the modal 
+    // TODO 9 :  After pop, we should get the new current pref from the modal
 
-        // TODO 10 :  Then we should update the service current pref,   and update the view
+    // TODO 10 :  Then we should update the service current pref,   and update the view
   }
 
-  void onFilterPressed() {
-  }
+  void onFilterPressed() {}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.only(
-          left: BlaSpacings.m, right: BlaSpacings.m, top: BlaSpacings.s),
-      child: Column(
-        children: [
-          // Top search Search bar
-          RidePrefBar(
-              ridePreference: currentPreference,
+      body: Padding(
+        padding: const EdgeInsets.only(
+          left: BlaSpacings.m,
+          right: BlaSpacings.m,
+          top: BlaSpacings.s,
+        ),
+        child: Column(
+          children: [
+            // Top search Search bar
+            RidePrefBar(
+              ridePreference: currentRidePreference,
               onBackPressed: onBackPressed,
               onPreferencePressed: onPreferencePressed,
-              onFilterPressed: onFilterPressed),
+              onFilterPressed: onFilterPressed,
+            ),
 
-          Expanded(
-            child: ListView.builder(
-              itemCount: matchingRides.length,
-              itemBuilder: (ctx, index) => RideTile(
-                ride: matchingRides[index],
-                onPressed: () {},
+            Expanded(
+              child: ListView.builder(
+                itemCount: matchingRides.length,
+                itemBuilder:
+                    (ctx, index) =>
+                        RideTile(ride: matchingRides[index], onPressed: () {}),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ));
+    );
   }
 }
