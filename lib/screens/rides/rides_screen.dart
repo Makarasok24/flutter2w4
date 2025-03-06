@@ -1,4 +1,5 @@
 import 'package:blablacar_week4/model/ride/ride_filter.dart';
+import 'package:blablacar_week4/model/ride/ride_sort_type.dart';
 import 'package:blablacar_week4/service/ride_prefs_service.dart';
 import 'package:flutter/material.dart';
 import 'package:blablacar_week4/screens/rides/widgets/ride_pref_bar.dart';
@@ -27,8 +28,13 @@ class _RidesScreenState extends State<RidesScreen> {
       RidePrefService.instance.currentPreference!;
   RideFilter currentFilter = RideFilter();
 
-  List<Ride> get matchingRides =>
-      RidesService.instance.getRidesFor(currentRidePreference, currentFilter);
+  RideSortType currentSortType = RideSortType.departureTime;
+
+  List<Ride> get matchingRides => RidesService.instance.getRidesFor(
+    currentRidePreference,
+    currentFilter,
+    currentSortType,
+  );
 
   void onBackPressed() {
     Navigator.of(context).pop(); //  Back to the previous view
