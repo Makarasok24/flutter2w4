@@ -1,5 +1,6 @@
 import 'package:blablacar_week4/model/ride/ride.dart';
 import 'package:blablacar_week4/model/ride/ride_filter.dart';
+import 'package:blablacar_week4/model/ride/ride_sort_type.dart';
 import 'package:blablacar_week4/model/ride_pref/ride_pref.dart';
 import 'package:blablacar_week4/repository/rides_repository.dart';
 
@@ -24,8 +25,12 @@ class RidesService {
     return _instance!;
   }
 
-  List<Ride> getRidesFor(RidePreference preference, RideFilter? filter) {
-    return repository.getRides(preference, filter);
+  List<Ride> getRidesFor(
+    RidePreference preference,
+    RideFilter? filter,
+    RideSortType? sortType,
+  ) {
+    return repository.getRides(preference, filter, sortType);
   }
 
   // static List<Ride> availableRides = fakeRides;

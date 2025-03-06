@@ -1,6 +1,7 @@
 import 'package:blablacar_week4/model/ride/locations.dart';
 import 'package:blablacar_week4/model/ride/ride.dart';
 import 'package:blablacar_week4/model/ride/ride_filter.dart';
+import 'package:blablacar_week4/model/ride/ride_sort_type.dart';
 import 'package:blablacar_week4/model/ride_pref/ride_pref.dart';
 import 'package:blablacar_week4/model/user/user.dart';
 import 'package:blablacar_week4/repository/rides_repository.dart';
@@ -75,15 +76,37 @@ class MockRidesRepository extends RidesRepository {
   }
 
   @override
-  List<Ride> getRides(RidePreference preference, RideFilter? filter) {
-    return _rides
-        .where(
-          (ride) =>
-              ride.departureLocation == preference.departure &&
-              ride.arrivalLocation == preference.arrival &&
-              (filter != null && filter.acceptPets ? ride.acceptPets : true) &&
-              ride.availableSeats > 0,
-        )
-        .toList();
+  List<Ride> getRides(
+    RidePreference preference,
+    RideFilter? filter,
+    RideSortType? sortType,
+  ) {
+    List<Ride> sortRide =
+        _rides
+            .where(
+              (ride) =>
+                  ride.departureLocation == preference.departure &&
+                  ride.arrivalLocation == preference.arrival &&
+                  (filter != null && filter.acceptPets
+                      ? ride.acceptPets
+                      : true) &&
+                  ride.availableSeats > 0,
+            )
+            .toList();
+
+    if (sortType != null) {
+      sortRide.sort((first, second) {
+        switch (sortType) {
+          case RideSortType.departureTime:
+            return first.departureDate.compareTo(second.departureDate);
+          case RideSortType.arrivalTime:
+            return first.arrivalDateTime.compareTo(second.arrivalDateTime);
+          case RideSortType.price:
+            return first.pricePerSeat.compareTo(second.pricePerSeat);
+        }
+      });
+    }
+
+    return sortRide;
   }
 }
